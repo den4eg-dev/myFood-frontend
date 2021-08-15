@@ -1,0 +1,26 @@
+.item {
+
+  svg {
+    font-size: 1.4rem;
+    margin-right: 1rem;
+  }
+  button {
+    padding: 5px 20px;
+    font-size: 1.3rem;
+    font-weight: 500;
+    outline: none;
+
+    button.accordion-button:focus {
+      z-index: 3;
+      border: none;
+      outline: 0;
+      box-shadow: none;
+    }
+
+    button.accordion-button:not .collapsed {
+              color: white;
+              background-color: transparent;
+              box-shadow: none;
+            }
+  }
+}
