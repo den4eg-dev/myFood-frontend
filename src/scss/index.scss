@@ -43,6 +43,11 @@ img.img {
   transform: translateX(-50%);
 }
 
+
+
+.dishList:nth-child(odd) {
+  background-color: #eeeeee;
+}
 .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
   margin: 8px !important;
 

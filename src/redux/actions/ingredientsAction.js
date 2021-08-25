@@ -29,7 +29,7 @@ export const deleteItem = (id) => (dispatch) => {
   dispatch(setLoading(true));
   deleteIngredient(id)
     .then((res) => {
-      dispatch(removeIngredient(id));
+      // dispatch(removeIngredient(id));
       dispatch(setLoading(false));
       console.log(res.message);
     })
