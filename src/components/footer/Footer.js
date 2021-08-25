@@ -3,7 +3,7 @@ import { BiFoodMenu } from "react-icons/bi";
 import { GiHotMeal } from "react-icons/gi";
 import { BiHomeAlt } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   CHAT_ROUTE,
   DISHES_ROUTE,
@@ -12,9 +12,6 @@ import {
 } from "../../utils/routeConsts";
 
 const Footer = () => {
-  const history = useHistory();
-  console.log(history);
-
   return (
     <footer className={`${styles.footer} bg-dark`}>
       <div className="row">

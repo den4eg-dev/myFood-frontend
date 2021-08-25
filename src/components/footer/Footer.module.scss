@@ -1,6 +1,8 @@
 $header-height: 80px;
 body {
   padding-bottom: calc(#{$header-height} + 2rem);
+  margin: auto;
+  outline: 5px solid black;
 }
 
 .footer {
@@ -11,9 +13,11 @@ body {
   left: 0;
   right: 0;
   top: calc(100% - #{$header-height});
-  width: 100vw;
-
+  max-width: 900px;
+  width: 100%;
+  margin: auto;
   z-index: 1000;
+  overflow-x: hidden;
 
 
   ul {

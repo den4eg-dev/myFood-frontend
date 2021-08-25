@@ -1,6 +1,6 @@
 import { Container, Navbar } from "react-bootstrap";
 import logo from "../../assets/images/fast-food.png";
-import { BsCalendar, BsFillCaretDownFill } from "react-icons/bs";
+import { BsCalendar } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { HOME_ROUTE } from "../../utils/routeConsts";
 import DatePicker from "react-datepicker";
