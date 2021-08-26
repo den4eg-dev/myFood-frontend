@@ -1,4 +1,9 @@
-import { createDishes, deleteDishes, getAllDishes } from "../../api/dishesAPI";
+import {
+  createDishes,
+  deleteDishes,
+  getAllDishes,
+  updateDishes,
+} from "../../api/dishesAPI";
 
 export const SET_ALL_DISHES = "GET_ALL_DISHES";
 export const SET_LOADING = "SET_LOADING";
@@ -28,6 +33,17 @@ export const createOneDish = (payload) => (dispatch) => {
 export const deleteOneDish = (id) => (dispatch) => {
   dispatch(setLoading(true));
   deleteDishes(id)
+    .then((res) => {
+      console.log(res.message);
+      dispatch(setLoading(false));
+    })
+    .catch((err) => console.log(err.message || err))
+    .finally(() => dispatch(setLoading(false)));
+};
+
+export const updateOneDish = (id, payload) => (dispatch) => {
+  dispatch(setLoading(true));
+  updateDishes(id, payload)
     .then((res) => {
       console.log(res.message);
       dispatch(setLoading(false));

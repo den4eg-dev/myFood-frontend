@@ -10,42 +10,44 @@ import {
 import SummaryList from "../components/summary/SummaryList";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneDish, fetchDishes } from "../redux/actions/dishesAction";
-import CreateIngredient from "../components/modals/CreateIngredients";
 import CreateDish from "../components/modals/CreateDish";
 import DeleteConfirm from "../components/modals/DeleteConfirm";
-import { setOneItemData } from "../redux/actions/ingredientsAction";
-import Meals from "./Meals";
+import IngredientsList from "../components/modals/IngredientsList";
 
 const Dishes = () => {
   const [showCreateDishModal, setShowCreateDishModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [oneDish, setOneDish] = useState(null);
 
   const { data, isLoading } = useSelector((state) => state.dishes);
   const dispatch = useDispatch();
-
+  console.log(data);
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   useEffect(() => {
     dispatch(fetchDishes());
     console.log("DISHES RENDER");
   }, [isLoading]);
 
-  const handleAddDishes = () => {
+  const handleClose = () => setShow(false);
+  const handleShow = (item) => {
+    setOneDish(item);
+    setShow(true);
+  };
+  const handleCreateDishes = () => {
     setShowCreateDishModal(true);
   };
   const handleDeleteItem = (id) => {
     dispatch(deleteOneDish(id));
   };
+
   return (
     <div className={"page"}>
       <Container>
         <h1>DISHES</h1>
         <div className={"d-flex justify-content-end"}>
           <Button
-            onClick={handleAddDishes}
+            onClick={handleCreateDishes}
             className={"my-3 w-25"}
             variant="dark"
             size="md"
@@ -53,67 +55,82 @@ const Dishes = () => {
             Create
           </Button>
         </div>
+        <SummaryList
+          summary={{
+            protein: "Protein",
+            carbs: "Carbs.",
+            fat: "Fat",
+            calories: "Calories",
+          }}
+        />
         <Accordion>
-          {data.map((item, index) => (
-            <div key={item._id} className={"dishName"}>
-              <Accordion.Item eventKey={index}>
-                <Accordion.Header>{item.title}</Accordion.Header>
-                <SummaryList />
+          {data &&
+            data.map((item, index) => (
+              <div key={item._id} className={"dishName mb-2"}>
+                <Accordion.Item eventKey={index}>
+                  <Accordion.Header>{item.title}</Accordion.Header>
+                  <SummaryList summary={{ ...item.summary }} />
 
-                <Accordion.Body className={"px-0"}>
-                  <div
-                    className={
-                      "d-flex justify-content-between align-items-center px-3 py-3"
-                    }
-                  >
-                    <Button
-                      className="mx-3"
-                      onClick={handleAddDishes}
-                      className={"w-50"}
-                      variant="outline-dark"
-                      size="sm"
-                      onClick={handleShow}
+                  <Accordion.Body className={"px-0"}>
+                    <div
+                      className={
+                        "d-flex justify-content-between align-items-center px-3 py-3"
+                      }
                     >
-                      add
-                    </Button>
-
-                    <DropdownButton
-                      id="dropdown-basic-button"
-                      variant="dark"
-                      title="options"
-                      size="sm"
-                    >
-                      <Dropdown.Item>UPDATE</Dropdown.Item>
-                      <Dropdown.Item
-                        className={"text-danger"}
-                        onClick={() => handleDeleteItem(item._id)}
+                      <Button
+                        className={"w-50 mx-3"}
+                        variant="outline-dark"
+                        size="sm"
+                        onClick={() => handleShow(item)}
                       >
-                        DELETE
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </div>
-                  {item.meals.map((meal) => (
-                    <div key={meal.index} className={"dishList py-2"}>
-                      <div className={"d-flex justify-content-between"}>
-                        <div> {meal.title}</div>
+                        add
+                      </Button>
 
-                        <Button
-                          onClick={handleAddDishes}
-                          className={""}
-                          variant="danger"
-                          size="sm"
-                          className={"mx-3"}
+                      <DropdownButton
+                        id="dropdown-basic-button"
+                        variant="dark"
+                        title="options"
+                        size="sm"
+                      >
+                        <Dropdown.Item>UPDATE</Dropdown.Item>
+                        <Dropdown.Item
+                          className={"text-danger"}
+                          onClick={() => handleDeleteItem(item._id)}
                         >
-                          remove
-                        </Button>
-                      </div>
-                      <SummaryList />
+                          DELETE
+                        </Dropdown.Item>
+                      </DropdownButton>
                     </div>
-                  ))}
-                </Accordion.Body>
-              </Accordion.Item>
-            </div>
-          ))}
+                    {item.meals &&
+                      item.meals.map((meal) => (
+                        <div key={meal._id} className={"dishList py-2"}>
+                          <div className={"d-flex justify-content-between"}>
+                            <div> {meal.title}</div>
+
+                            <Button
+                              // onClick={handleAddDishes}
+                              variant="danger"
+                              size="sm"
+                              className={"mx-3"}
+                            >
+                              remove
+                            </Button>
+                          </div>
+                          <SummaryList
+                            summary={{
+                              protein: meal.protein,
+                              carbs: meal.carbs,
+                              fat: meal.fat,
+                              calories: meal.calories,
+                              weight: meal.weight,
+                            }}
+                          />
+                        </div>
+                      ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </div>
+            ))}
         </Accordion>
       </Container>
       <DeleteConfirm
@@ -130,7 +147,7 @@ const Dishes = () => {
           <Offcanvas.Title>Offcanvas</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Meals />
+          <IngredientsList onHide={handleClose} oneDishData={oneDish} />
         </Offcanvas.Body>
       </Offcanvas>
     </div>

@@ -42,10 +42,14 @@ img.img {
   left: 50%;
   transform: translateX(-50%);
 }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 
-
-.dishList:nth-child(odd) {
+.dishList:nth-child(even) {
   background-color: #eeeeee;
 }
 .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {

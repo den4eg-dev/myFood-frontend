@@ -19,15 +19,12 @@ export const createDishes = async (payload) => {
   });
   return data;
 };
-//
-// export const updateIngredient = async (id, payload) => {
-//   const { data } = await $host.put(`ingredients/${id}`, payload, {
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//     },
-//   });
-//   return data;
-// };
+
+export const updateDishes = async (id, payload) => {
+  console.log("API", payload);
+  const { data } = await $host.put(`dishes/${id}`, payload);
+  return data;
+};
 //
 // export const getOneIngredient = async (id) => {
 //   const { data } = await $host.get("ingredients/" + id);

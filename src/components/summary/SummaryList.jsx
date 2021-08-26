@@ -7,6 +7,7 @@ const initialState = {
   carbs: 0,
   fat: 0,
   calories: 0,
+  weight: 0,
 };
 
 const SummaryList = ({ daily = false, summary = initialState }) => {
@@ -41,7 +42,9 @@ const SummaryList = ({ daily = false, summary = initialState }) => {
             <div className="col">{summary.carbs}</div>
             <div className="col">{summary.fat}</div>
             <div className="col">{summary.calories}</div>
-            <div className="col"></div>
+            <div className="col">
+              {summary.weight ? `${summary.weight} gramm` : ""}
+            </div>
           </div>
         </div>
       )}

@@ -5,7 +5,7 @@ import {
   createIngredient,
 } from "../../api/ingridientsAPI";
 import {
-  REMOVE_ITEM,
+  // REMOVE_ITEM,
   SET_INGREDIENTS,
   SET_LOADING,
   SET_ONE_ITEM,
@@ -81,10 +81,10 @@ const setLoading = (payload) => ({
   payload,
 });
 
-const removeIngredient = (payload) => ({
-  type: REMOVE_ITEM,
-  payload,
-});
+// const removeIngredient = (payload) => ({
+//   type: REMOVE_ITEM,
+//   payload,
+// });
 
 export const setOneItemData = (payload) => ({
   type: SET_ONE_ITEM,

@@ -41,14 +41,17 @@ const UpdateIngredient = ({ show, onHide }) => {
 
   const handleUpdateItem = () => {
     const formData = new FormData();
-
     formData.append("fat", `${fatValue || 0}`);
     formData.append("carbs", `${carbsValue || 0}`);
     formData.append("calories", `${caloriesValue || 0}`);
     formData.append("protein", `${proteinValue || 0}`);
     formData.append("title", `${titleValue}`);
+
     // formData.append("path", `${image.path}`);
-    if (file) formData.append("image", file);
+    if (file) {
+      formData.append("image", file);
+      formData.append("filename", `${oneItem.image.filename}`);
+    }
     dispatch(updateOneItem(_id, formData));
     onHide();
   };
