@@ -12,9 +12,9 @@ import {
   SET_UPDATED_ITEM,
 } from "../consts";
 
-export const fetchIngredients = (search) => (dispatch) => {
+export const fetchIngredients = (search, sortBy) => (dispatch) => {
   dispatch(setLoading(false));
-  getIngredients(search)
+  getIngredients(search, sortBy)
     .then((res) => {
       dispatch(setIngredients(res.data));
       // console.log(res.data);

@@ -4,6 +4,7 @@ import {
   ListGroup,
   Dropdown,
   Button,
+  Form,
   Container,
 } from "react-bootstrap";
 import SummaryList from "../components/summary/SummaryList";
@@ -31,13 +32,14 @@ const Meals = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [sortBy, setSortBy] = useState("createdAt:desc");
 
   const URL = "http://localhost:5000/";
 
   useEffect(() => {
-    dispatch(fetchIngredients(search));
+    dispatch(fetchIngredients(search, sortBy));
     console.log("MEALS RENDER");
-  }, [search, isLoading]);
+  }, [search, sortBy, isLoading]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -54,6 +56,11 @@ const Meals = () => {
 
   const handleCreateItem = () => {
     setShowCreateModal(true);
+  };
+
+  const onChangeSort = (e) => {
+    console.log(e.target.value);
+    setSortBy(e.target.value);
   };
   return (
     <div className={"page"}>
@@ -73,8 +80,24 @@ const Meals = () => {
             aria-describedby="addon-wrapping"
           />
         </div>
-        <div className={"d-flex justify-content-end mb-2"}>
-          <Button onClick={handleCreateItem} variant="primary" size="lg">
+        <div
+          className={"d-flex justify-content-between align-items-center mb-2"}
+        >
+          <div>
+            <label>
+              SortBy:
+              <Form.Select onChange={onChangeSort} size="sm">
+                <option value={"createdAt:desc"} selected>
+                  date - up
+                </option>
+                <option value={"createdAt:asc"}>date - down</option>
+                <option value={"title:asc"}>name => ABC</option>
+                <option value={"title:desc"}>Name => ZYX </option>
+              </Form.Select>
+            </label>
+          </div>
+
+          <Button onClick={handleCreateItem} variant="dark" size="lg">
             +
           </Button>
         </div>
@@ -112,6 +135,7 @@ const Meals = () => {
                         <h5>{item.title}</h5>
                         <span>
                           <DropdownButton
+                            size={"sm"}
                             id="dropdown-basic-button"
                             title="options"
                           >

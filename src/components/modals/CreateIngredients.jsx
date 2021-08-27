@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { Button, FormControl, Form, InputGroup } from "react-bootstrap";
 import { useDispatch } from "react-redux";
@@ -14,8 +14,29 @@ const CreateIngredient = ({ show, onHide }) => {
   const [carbsValue, setCarbsValue] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [file, setFile] = useState(null);
-  const [error, setError] = useState(null);
+  const [preview, setPreview] = useState("");
+  const [error, setError] = useState("");
   const URL = "http://localhost:5000/";
+
+  useEffect(() => {
+    if (!file) {
+      setPreview(null);
+      return;
+    }
+    const objectUrl = window.URL.createObjectURL(file);
+    setPreview(objectUrl);
+    return () => window.URL.revokeObjectURL(objectUrl);
+  }, [file]);
+
+  const resetForm = () => {
+    setProteinValue("");
+    setFatValue("");
+    setCaloriesValue("");
+    setCarbsValue("");
+    setTitleValue("");
+    setFile(null);
+    setError("");
+  };
 
   const selectFile = (e) => {
     let selected = e.target.files[0];
@@ -30,20 +51,31 @@ const CreateIngredient = ({ show, onHide }) => {
       setError("Please select an image file (png or jpg)");
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (titleValue.trim() === "") {
+      setError("plz enter a title!");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("fat", `${fatValue}`);
-    formData.append("carbs", `${carbsValue}`);
-    formData.append("calories", `${caloriesValue}`);
-    formData.append("protein", `${proteinValue}`);
+
+    formData.append("fat", `${fatValue || 0}`);
+    formData.append("carbs", `${carbsValue || 0}`);
+    formData.append("calories", `${caloriesValue || 0}`);
+    formData.append("protein", `${proteinValue || 0}`);
     formData.append("title", `${titleValue}`);
     if (file) formData.append("image", file);
 
     dispatch(CreateOneItem(formData));
     onHide();
+    resetForm();
+  };
+
+  const handleClose = () => {
+    onHide();
+    setFile(null);
   };
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -58,9 +90,13 @@ const CreateIngredient = ({ show, onHide }) => {
           className={"d-flex justify-content-center mb-2  align-items-center"}
         >
           {image ? (
-            <img className="img" src={URL + image.path} alt={image.path} />
+            <img
+              className="img"
+              src={preview || URL + image.path}
+              alt={image.path}
+            />
           ) : (
-            <img className="img" src={dummyImg} alt="dummy" />
+            <img className="img" src={preview || dummyImg} alt="dummy" />
           )}
         </div>
         <Form>
@@ -86,6 +122,7 @@ const CreateIngredient = ({ show, onHide }) => {
 
             <Form.Control
               aria-label="Large"
+              type={"number"}
               aria-describedby="inputGroup-sizing-sm"
               onChange={(e) => setProteinValue(e.currentTarget.value)}
               value={proteinValue}
@@ -95,6 +132,7 @@ const CreateIngredient = ({ show, onHide }) => {
             <InputGroup.Text className={"w-50"}>Carbs</InputGroup.Text>
             <FormControl
               aria-label="Large"
+              type={"number"}
               aria-describedby="inputGroup-sizing-sm"
               onChange={(e) => setCarbsValue(e.currentTarget.value)}
               value={carbsValue}
@@ -104,6 +142,7 @@ const CreateIngredient = ({ show, onHide }) => {
             <InputGroup.Text className={"w-50"}>Fat</InputGroup.Text>
             <Form.Control
               aria-label="Large"
+              type={"number"}
               aria-describedby="inputGroup-sizing-sm"
               onChange={(e) => setFatValue(e.currentTarget.value)}
               value={fatValue}
@@ -112,6 +151,7 @@ const CreateIngredient = ({ show, onHide }) => {
           <InputGroup className={"mb-2"} size="lg">
             <InputGroup.Text className={"w-50"}>Calories</InputGroup.Text>
             <Form.Control
+              type={"number"}
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
               onChange={(e) => setCaloriesValue(e.currentTarget.value)}
@@ -122,7 +162,7 @@ const CreateIngredient = ({ show, onHide }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="outline-danger" onClick={onHide}>
+        <Button variant="outline-danger" onClick={handleClose}>
           Close
         </Button>
         <Button variant="outline-success" type="submit" onClick={handleSubmit}>

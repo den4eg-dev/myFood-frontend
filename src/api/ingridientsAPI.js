@@ -1,8 +1,8 @@
 import { $host } from "./index";
 
-export const getIngredients = async (search) => {
+export const getIngredients = async (search, sortBy = "createdAt:desc") => {
   const { data } = await $host.get(
-    `ingredients?page=1&limit=10&searchByName=${search}&sortBy=createdAt:desc`
+    `ingredients?page=1&limit=10&searchByName=${search}&sortBy=${sortBy}`
   );
   return data;
 };
