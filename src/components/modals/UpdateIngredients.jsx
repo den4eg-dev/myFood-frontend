@@ -63,7 +63,8 @@ const UpdateIngredient = ({ show, onHide }) => {
     // formData.append("path", `${image.path}`);
     if (file) {
       formData.append("image", file);
-      formData.append("filename", `${oneItem.image.filename}`);
+      if (oneItem.image)
+        formData.append("filename", `${oneItem.image.filename}`);
     }
     dispatch(updateOneItem(_id, formData));
     onHide();

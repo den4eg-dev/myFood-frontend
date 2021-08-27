@@ -28,6 +28,9 @@ const imageStyled = {
 const Meals = () => {
   const dispatch = useDispatch();
   const { data, isLoading } = useSelector((state) => state.ingredients);
+
+  const [page, setPage] = useState(1);
+
   const [search, setSearch] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -37,9 +40,10 @@ const Meals = () => {
   const URL = "http://localhost:5000/";
 
   useEffect(() => {
-    dispatch(fetchIngredients(search, sortBy));
+    dispatch(fetchIngredients(search, sortBy, page));
+
     console.log("MEALS RENDER");
-  }, [search, sortBy, isLoading]);
+  }, [search, sortBy, page, isLoading]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -62,6 +66,7 @@ const Meals = () => {
     console.log(e.target.value);
     setSortBy(e.target.value);
   };
+
   return (
     <div className={"page"}>
       <Container>
@@ -88,9 +93,9 @@ const Meals = () => {
               SortBy:
               <Form.Select onChange={onChangeSort} size="sm">
                 <option value={"createdAt:desc"} selected>
-                  date - up
+                  date &#9650;
                 </option>
-                <option value={"createdAt:asc"}>date - down</option>
+                <option value={"createdAt:asc"}>date &#9660;</option>
                 <option value={"title:asc"}>name => ABC</option>
                 <option value={"title:desc"}>Name => ZYX </option>
               </Form.Select>
