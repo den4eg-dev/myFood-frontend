@@ -18,7 +18,7 @@ import {
 } from "../redux/actions/ingredientsAction";
 import CreateIngredient from "../components/modals/CreateIngredients";
 import dummyImg from "../assets/images/dummy.jpg";
-
+import { URL } from "../api/index";
 const imageStyled = {
   width: "70px",
   height: "70px",
@@ -37,8 +37,9 @@ const Meals = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [sortBy, setSortBy] = useState("createdAt:desc");
 
-  const URL = "http://localhost:5000/";
-
+  // const URL = "http://localhost:5000/";
+  // const URL = "https://myfood-backend.herokuapp.com";
+  const baseURL = URL();
   useEffect(() => {
     dispatch(fetchIngredients(search, sortBy, page));
 
@@ -122,7 +123,7 @@ const Meals = () => {
                       {item.image ? (
                         <img
                           style={imageStyled}
-                          src={URL + item.image.path}
+                          src={baseURL + item.image.path}
                           alt={item.image.original}
                         />
                       ) : (
