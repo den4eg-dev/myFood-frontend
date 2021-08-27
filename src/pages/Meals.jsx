@@ -92,9 +92,7 @@ const Meals = () => {
             <label>
               SortBy:
               <Form.Select onChange={onChangeSort} size="sm">
-                <option value={"createdAt:desc"} selected>
-                  date &#9650;
-                </option>
+                <option defaultValue={"createdAt:desc"}>date &#9650;</option>
                 <option value={"createdAt:asc"}>date &#9660;</option>
                 <option value={"title:asc"}>name => ABC</option>
                 <option value={"title:desc"}>Name => ZYX </option>
