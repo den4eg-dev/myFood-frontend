@@ -1,5 +1,0 @@
-export const SET_INGREDIENTS = "SET_INGREDIENTS";
-export const SET_LOADING = "SET_LOADING";
-export const REMOVE_ITEM = "REMOVE_ITEM";
-export const SET_ONE_ITEM = "SET_ONE_ITEM";
-export const SET_UPDATED_ITEM = "SET_UPDATED_ITEM";

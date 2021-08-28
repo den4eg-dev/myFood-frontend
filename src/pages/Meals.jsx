@@ -44,7 +44,7 @@ const Meals = () => {
     dispatch(fetchIngredients(search, sortBy, page));
 
     console.log("MEALS RENDER");
-  }, [search, sortBy, page, isLoading]);
+  }, [search, sortBy, page]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);

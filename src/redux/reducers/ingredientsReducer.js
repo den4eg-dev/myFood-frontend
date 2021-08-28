@@ -4,7 +4,8 @@ import {
   SET_LOADING,
   SET_ONE_ITEM,
   SET_UPDATED_ITEM,
-} from "../consts";
+  ADD_ONE_INGREDIENT,
+} from "../actions/ingredientsAction";
 
 const initialState = {
   data: [],
@@ -15,16 +16,25 @@ const initialState = {
 const ingredients = (state = initialState, action) => {
   switch (action.type) {
     case SET_INGREDIENTS:
+      // console.log("ACTION", action.payload);
       return {
         ...state,
         data: action.payload,
       };
+    case ADD_ONE_INGREDIENT:
+      // Object.assign(state.data,data);
+      return {
+        ...state,
+        data: [...state.data, action.payload],
+      };
+
     case REMOVE_ITEM: {
-      // const newData = [...state.data];
-      // // delete newData[action.payload];
-      // console.log(newData);
-      // const data = newData.map((item) => item._id !== action.payload._id);
-      return { ...state, isLoading: action.payload };
+      console.log("REDUCER", action.payload);
+
+      return {
+        ...state,
+        data: state.data.filter((item) => item._id !== action.payload),
+      };
     }
 
     case SET_LOADING:
@@ -34,7 +44,7 @@ const ingredients = (state = initialState, action) => {
       return { ...state, oneItem: action.payload };
 
     case SET_UPDATED_ITEM:
-      console.log(action);
+      // console.log(action);
       return state;
 
     default:

@@ -4,13 +4,13 @@ import {
   updateIngredient,
   createIngredient,
 } from "../../api/ingridientsAPI";
-import {
-  // REMOVE_ITEM,
-  SET_INGREDIENTS,
-  SET_LOADING,
-  SET_ONE_ITEM,
-  SET_UPDATED_ITEM,
-} from "../consts";
+
+export const SET_INGREDIENTS = "SET_INGREDIENTS";
+export const SET_LOADING = "SET_LOADING";
+export const REMOVE_ITEM = "REMOVE_ITEM";
+export const SET_ONE_ITEM = "SET_ONE_ITEM";
+export const SET_UPDATED_ITEM = "SET_UPDATED_ITEM";
+export const ADD_ONE_INGREDIENT = " ADD_ONE_INGREDIENT";
 
 export const fetchIngredients = (search, sortBy, page) => (dispatch) => {
   dispatch(setLoading(false));
@@ -29,9 +29,9 @@ export const deleteItem = (id) => (dispatch) => {
   dispatch(setLoading(true));
   deleteIngredient(id)
     .then((res) => {
-      // dispatch(removeIngredient(id));
+      dispatch(removeIngredient(id));
       dispatch(setLoading(false));
-      console.log(res.message);
+      console.log(res);
     })
     .catch((err) => {
       dispatch(setLoading(false));
@@ -57,7 +57,8 @@ export const CreateOneItem = (payload) => (dispatch) => {
   dispatch(setLoading(true));
   createIngredient(payload)
     .then((res) => {
-      console.log(res);
+      console.log("ACTION", res);
+      dispatch(addOneIngredient(res));
       dispatch(setLoading(false));
     })
     .catch((err) => {
@@ -65,6 +66,11 @@ export const CreateOneItem = (payload) => (dispatch) => {
       console.log(err.message || err);
     });
 };
+
+const addOneIngredient = (payload) => ({
+  type: ADD_ONE_INGREDIENT,
+  payload,
+});
 
 const setUpdatedItem = (payload) => ({
   type: SET_UPDATED_ITEM,
@@ -81,10 +87,10 @@ const setLoading = (payload) => ({
   payload,
 });
 
-// const removeIngredient = (payload) => ({
-//   type: REMOVE_ITEM,
-//   payload,
-// });
+const removeIngredient = (payload) => ({
+  type: REMOVE_ITEM,
+  payload,
+});
 
 export const setOneItemData = (payload) => ({
   type: SET_ONE_ITEM,
