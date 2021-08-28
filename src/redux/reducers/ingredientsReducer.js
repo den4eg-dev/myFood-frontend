@@ -10,7 +10,7 @@ import {
 const initialState = {
   data: [],
   isLoading: false,
-  oneItem: {},
+  oneItem: null,
 };
 
 const ingredients = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const ingredients = (state = initialState, action) => {
       // Object.assign(state.data,data);
       return {
         ...state,
-        data: [...state.data, action.payload],
+        data: [action.payload, ...state.data],
       };
 
     case REMOVE_ITEM: {
@@ -43,9 +43,18 @@ const ingredients = (state = initialState, action) => {
     case SET_ONE_ITEM:
       return { ...state, oneItem: action.payload };
 
-    case SET_UPDATED_ITEM:
-      // console.log(action);
-      return state;
+    case SET_UPDATED_ITEM: {
+      let newItem = action.payload;
+      const foundIndex = state.data.findIndex(
+        (item) => item._id === newItem._id
+      );
+      const newArr = [...state.data];
+      newArr[foundIndex] = newItem;
+
+      console.log(foundIndex);
+
+      return { ...state, data: newArr };
+    }
 
     default:
       return state;

@@ -9,24 +9,19 @@ const UpdateIngredient = ({ show, onHide }) => {
   const { oneItem } = useSelector((state) => state.ingredients);
   const dispatch = useDispatch();
   const { protein, fat, carbs, calories, title, _id, image } = oneItem;
-  const [proteinValue, setProteinValue] = useState("");
-  const [fatValue, setFatValue] = useState("");
-  const [caloriesValue, setCaloriesValue] = useState("");
-  const [carbsValue, setCarbsValue] = useState("");
-  const [titleValue, setTitleValue] = useState("");
+  const [proteinValue, setProteinValue] = useState(protein);
+  const [fatValue, setFatValue] = useState(fat);
+  const [caloriesValue, setCaloriesValue] = useState(calories);
+  const [carbsValue, setCarbsValue] = useState(carbs);
+  const [titleValue, setTitleValue] = useState(title);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
   const URL = "http://localhost:5000/";
-
+  console.log("UPDATE MODAL RENDER");
   useEffect(() => {
-    setCaloriesValue(calories);
-    setTitleValue(title);
-    setCarbsValue(carbs);
-    setFatValue(fat);
-    setProteinValue(protein);
-    console.log("UPDATE MODAL RENDER");
-  }, [calories, protein, fat, carbs, title]);
+    return () => setFile(null);
+  }, []);
 
   useEffect(() => {
     if (!file) {
@@ -73,7 +68,6 @@ const UpdateIngredient = ({ show, onHide }) => {
 
   const handleClose = () => {
     onHide();
-    setFile(null);
   };
   return (
     <Modal show={show} onHide={onHide} centered>

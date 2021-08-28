@@ -176,19 +176,24 @@ const Meals = () => {
           )}
         </ListGroup>
       </Container>
-
-      <UpdateIngredient
-        show={showUpdateModal}
-        onHide={() => setShowUpdateModal(false)}
-      />
-      <DeleteConfirm
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
-      />
-      <CreateIngredient
-        show={showCreateModal}
-        onHide={() => setShowCreateModal(false)}
-      />
+      {showUpdateModal && (
+        <UpdateIngredient
+          show={showUpdateModal}
+          onHide={() => setShowUpdateModal(false)}
+        />
+      )}
+      {showDeleteModal && (
+        <DeleteConfirm
+          show={showDeleteModal}
+          onHide={() => setShowDeleteModal(false)}
+        />
+      )}
+      {showCreateModal && (
+        <CreateIngredient
+          show={showCreateModal}
+          onHide={() => setShowCreateModal(false)}
+        />
+      )}
     </div>
   );
 };
