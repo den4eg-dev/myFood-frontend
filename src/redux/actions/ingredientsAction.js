@@ -57,7 +57,6 @@ export const CreateOneItem = (payload) => (dispatch) => {
   dispatch(setLoading(true));
   createIngredient(payload)
     .then((res) => {
-      console.log("ACTION", res);
       dispatch(addOneIngredient(res));
       dispatch(setLoading(false));
     })

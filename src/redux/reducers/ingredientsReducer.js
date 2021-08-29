@@ -29,8 +29,6 @@ const ingredients = (state = initialState, action) => {
       };
 
     case REMOVE_ITEM: {
-      console.log("REDUCER", action.payload);
-
       return {
         ...state,
         data: state.data.filter((item) => item._id !== action.payload),
@@ -50,8 +48,6 @@ const ingredients = (state = initialState, action) => {
       );
       const newArr = [...state.data];
       newArr[foundIndex] = newItem;
-
-      console.log(foundIndex);
 
       return { ...state, data: newArr };
     }

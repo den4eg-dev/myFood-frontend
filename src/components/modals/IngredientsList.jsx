@@ -8,21 +8,21 @@ import { Button, Form, ListGroup } from "react-bootstrap";
 import SummaryList from "../summary/SummaryList";
 import { updateOneDish } from "../../redux/actions/dishesAction";
 
-const IngredientsList = ({ oneDishData, onHide }) => {
+const IngredientsList = ({ onHide }) => {
   const dispatch = useDispatch();
   const { data, isLoading } = useSelector((state) => state.ingredients);
-  const [search, setSearch] = useState("");
-  const [targetValueName, setTargetValueName] = useState("");
+  const { selectedDish } = useSelector((state) => state.dishes);
 
-  const [weightItem, setWeightItem] = useState(
+  const [search, setSearch] = useState("");
+  const [error, setError] = useState("");
+
+  const [weightItemValue, setWeightItemValue] = useState(
     data.reduce((acc, item) => {
-      return { ...acc, [item._id]: "100" };
+      return { ...acc, [item._id]: "" };
     }, {})
   );
-
   useEffect(() => {
     dispatch(fetchIngredients(search));
-    console.log("INGREDIENTS_LIST RENDER");
   }, [search]);
 
   const handleSearch = (e) => {
@@ -30,9 +30,12 @@ const IngredientsList = ({ oneDishData, onHide }) => {
   };
 
   const onAddButton = (e, meal) => {
-    const arr = [];
-    let arrMeals = [...oneDishData.meals];
     let { title, _id, calories, carbs, fat, protein } = meal;
+
+    if (!weightItemValue[_id]) return;
+
+    // let arrMeals = [...oneDishData.meals];
+    let arrMeals = [...selectedDish.meals];
 
     const calculate = (oldWeight, newWeight) => {
       const sum = (Number(oldWeight) * Number(newWeight)) / 100;
@@ -40,47 +43,25 @@ const IngredientsList = ({ oneDishData, onHide }) => {
     };
 
     const oneMeal = {
-      calories: calculate(calories, weightItem[_id]),
-      carbs: calculate(carbs, weightItem[_id]),
-      fat: calculate(fat, weightItem[_id]),
-      protein: calculate(protein, weightItem[_id]),
+      calories: calculate(calories, weightItemValue[_id]),
+      carbs: calculate(carbs, weightItemValue[_id]),
+      fat: calculate(fat, weightItemValue[_id]),
+      protein: calculate(protein, weightItemValue[_id]),
       title,
-      weight: Number(weightItem[_id]),
+      weight: Number(weightItemValue[_id]),
       _id,
     };
+
     arrMeals.push(oneMeal);
-    // TODO 100 pro need to be REFACTORED
-    const sumProtein = arrMeals.reduce((sum, item) => {
-      return sum + Number(item.protein);
-    }, 0);
-    const sumFat = arrMeals.reduce((sum, item) => {
-      return sum + Number(item.fat);
-    }, 0);
-    const sumCalorie = arrMeals.reduce((sum, item) => {
-      return sum + Number(item.calories);
-    }, 0);
-    const sumCarbs = arrMeals.reduce((sum, item) => {
-      return sum + Number(item.carbs);
-    }, 0);
 
-    // arr.push(summary);
-    const summary = {
-      protein: sumProtein,
-      fat: sumFat,
-      calories: sumCalorie,
-      carbs: sumCarbs,
-    };
-
-    arr.push(summary);
-    arr.push(arrMeals);
-
-    dispatch(updateOneDish(oneDishData._id, [...arr]));
+    dispatch(updateOneDish(selectedDish._id, [...arrMeals]));
     onHide();
   };
+
   const onChangeValue = (e) => {
     const value = e.currentTarget.value;
-    setWeightItem({ ...weightItem, [e.target.name]: value });
-    setTargetValueName(e.target.name);
+    // if (!value) e.target.classList.add("border-danger");
+    setWeightItemValue({ ...weightItemValue, [e.target.name]: value });
   };
   return (
     <div className={"page"}>
@@ -119,12 +100,13 @@ const IngredientsList = ({ oneDishData, onHide }) => {
                       aria-label="Large"
                       name={meal._id}
                       aria-describedby="inputGroup-sizing-sm"
-                      value={weightItem[meal._id]}
+                      value={weightItemValue[meal._id]}
                       type="number"
                       placeholder={"100g"}
                       onChange={onChangeValue}
                     />
                   </div>
+
                   <div className={"col-2 justify-content-end"}>
                     <Button
                       onClick={(e) => onAddButton(e, meal)}
@@ -135,6 +117,7 @@ const IngredientsList = ({ oneDishData, onHide }) => {
                       +
                     </Button>
                   </div>
+                  <p className={"text-danger"}>{error}</p>
                 </div>
                 <SummaryList
                   summary={{

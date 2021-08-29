@@ -12,11 +12,7 @@ export const deleteDishes = async (id) => {
 };
 
 export const createDishes = async (payload) => {
-  const { data } = await $host.post("dishes", payload, {
-    headers: {
-      // "Content-Type": "multipart/form-data",
-    },
-  });
+  const { data } = await $host.post("dishes", payload);
   return data;
 };
 

@@ -11,13 +11,9 @@ const CreateDish = ({ show, onHide }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const obj = { title: titleValue };
-    dispatch(createOneDish(obj));
+    if (!titleValue.trim()) return setError("plz enter a title");
+    dispatch(createOneDish({ title: titleValue }));
     onHide();
-    // if (titleValue.trim()) {
-    //   // const obj = { title: titleValue };
-    //
-    // } else setError("plz write a name");
   };
   return (
     <Modal show={show} onHide={onHide} centered>

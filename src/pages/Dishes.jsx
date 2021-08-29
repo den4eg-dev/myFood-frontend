@@ -9,29 +9,33 @@ import {
 } from "react-bootstrap";
 import SummaryList from "../components/summary/SummaryList";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOneDish, fetchDishes } from "../redux/actions/dishesAction";
+import {
+  deleteOneDish,
+  fetchDishes,
+  setOneDish,
+} from "../redux/actions/dishesAction";
 import CreateDish from "../components/modals/CreateDish";
 import DeleteConfirm from "../components/modals/DeleteConfirm";
 import IngredientsList from "../components/modals/IngredientsList";
 
 const Dishes = () => {
-  const [showCreateDishModal, setShowCreateDishModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [oneDish, setOneDish] = useState(null);
-
   const { data, isLoading } = useSelector((state) => state.dishes);
   const dispatch = useDispatch();
-  console.log(data);
-  const [show, setShow] = useState(false);
 
+  const [showCreateDishModal, setShowCreateDishModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [oneDish, setOneDish] = useState(null);
+
+  const [show, setShow] = useState(false);
+  console.log("DISHES RENDER");
   useEffect(() => {
     dispatch(fetchDishes());
-    console.log("DISHES RENDER");
-  }, [isLoading]);
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = (item) => {
-    setOneDish(item);
+    dispatch(setOneDish(item));
+    // setOneDish(item);
     setShow(true);
   };
   const handleCreateDishes = () => {
@@ -144,10 +148,10 @@ const Dishes = () => {
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+          <Offcanvas.Title>List of Meals</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <IngredientsList onHide={handleClose} oneDishData={oneDish} />
+          <IngredientsList onHide={handleClose} />
         </Offcanvas.Body>
       </Offcanvas>
     </div>
