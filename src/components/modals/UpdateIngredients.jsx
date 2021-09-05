@@ -94,7 +94,7 @@ const UpdateIngredient = ({ show, onHide }) => {
         <Form.Control
           size="lg"
           type="file"
-          className={"mb-5"}
+          className={"mb-2"}
           placeholder="Large text"
           onChange={selectFile}
         />
@@ -152,10 +152,10 @@ const UpdateIngredient = ({ show, onHide }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="outline-danger" onClick={handleClose}>
+        <Button size="lg" variant="outline-danger" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="outline-success" onClick={handleUpdateItem}>
+        <Button size="lg" variant="outline-success" onClick={handleUpdateItem}>
           Save
         </Button>
       </Modal.Footer>

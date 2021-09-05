@@ -40,8 +40,6 @@ const CreateIngredient = ({ show, onHide }) => {
 
   const selectFile = (e) => {
     let selected = e.target.files[0];
-    console.log(selected);
-    console.log(dummyImg);
     const types = ["image/png", "image/jpeg"];
     if (selected && types.includes(selected.type)) {
       setFile(selected);
@@ -101,9 +99,8 @@ const CreateIngredient = ({ show, onHide }) => {
         </div>
         <Form>
           <Form.Control
-            size="lg"
             type="file"
-            className={"mb-5"}
+            className={"mb-3"}
             placeholder="Large text"
             onChange={selectFile}
           />
@@ -111,6 +108,7 @@ const CreateIngredient = ({ show, onHide }) => {
           <InputGroup className={"mb-2"} size="lg">
             <InputGroup.Text className={"w-50"}>Title</InputGroup.Text>
             <Form.Control
+              size="sm"
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
               onChange={(e) => setTitleValue(e.currentTarget.value)}
@@ -121,7 +119,7 @@ const CreateIngredient = ({ show, onHide }) => {
             <InputGroup.Text className={"w-50"}>Protein</InputGroup.Text>
 
             <Form.Control
-              aria-label="Large"
+              aria-label="large"
               type={"number"}
               aria-describedby="inputGroup-sizing-sm"
               onChange={(e) => setProteinValue(e.currentTarget.value)}
@@ -162,11 +160,16 @@ const CreateIngredient = ({ show, onHide }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="outline-danger" onClick={handleClose}>
+        <Button size="lg" variant="outline-danger" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="outline-success" type="submit" onClick={handleSubmit}>
-          Save
+        <Button
+          size="lg"
+          variant="outline-success"
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Create
         </Button>
       </Modal.Footer>
     </Modal>
