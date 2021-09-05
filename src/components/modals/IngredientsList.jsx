@@ -29,18 +29,23 @@ const IngredientsList = ({ onHide }) => {
     setSearch(e.target.value);
   };
 
+  const calculate = (oldWeight, newWeight) => {
+    const sum = (Number(oldWeight) * Number(newWeight)) / 100;
+    return Math.ceil(sum);
+  };
+
   const onAddButton = (e, meal) => {
     let { title, _id, calories, carbs, fat, protein } = meal;
 
-    if (!weightItemValue[_id]) return;
+    if (
+      !weightItemValue[_id] ||
+      !selectedDish.meals.every((item) => item._id !== meal._id)
+    ) {
+      setError("already added!");
+      return;
+    }
 
-    // let arrMeals = [...oneDishData.meals];
-    let arrMeals = [...selectedDish.meals];
-
-    const calculate = (oldWeight, newWeight) => {
-      const sum = (Number(oldWeight) * Number(newWeight)) / 100;
-      return Math.ceil(sum);
-    };
+    const arrMeals = [...selectedDish.meals];
 
     const oneMeal = {
       calories: calculate(calories, weightItemValue[_id]),
@@ -117,7 +122,7 @@ const IngredientsList = ({ onHide }) => {
                       +
                     </Button>
                   </div>
-                  <p className={"text-danger"}>{error}</p>
+                  {/*<p className={"text-danger"}>{error}</p>*/}
                 </div>
                 <SummaryList
                   summary={{

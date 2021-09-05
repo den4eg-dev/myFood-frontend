@@ -10,7 +10,11 @@ const initialState = {
   weight: 0,
 };
 
-const SummaryList = ({ daily = false, summary = initialState }) => {
+const SummaryList = ({
+  daily = false,
+  summary = initialState,
+  bold = false,
+}) => {
   return (
     <>
       {daily ? (
@@ -38,11 +42,19 @@ const SummaryList = ({ daily = false, summary = initialState }) => {
       ) : (
         <div className={styles.list}>
           <div className="row">
-            <div className="col">{summary.protein}</div>
-            <div className="col">{summary.carbs}</div>
-            <div className="col">{summary.fat}</div>
-            <div className="col">{summary.calories}</div>
-            <div className="col">
+            <div className={bold ? `col text-primary` : `col`}>
+              {summary.protein}
+            </div>
+            <div className={bold ? `col text-primary` : `col`}>
+              {summary.carbs}
+            </div>
+            <div className={bold ? `col text-primary` : `col`}>
+              {summary.fat}
+            </div>
+            <div className={bold ? `col text-primary` : `col`}>
+              {summary.calories}
+            </div>
+            <div className={bold ? `col text-primary` : `col`}>
               {summary.weight ? `${summary.weight} gramm` : ""}
             </div>
           </div>

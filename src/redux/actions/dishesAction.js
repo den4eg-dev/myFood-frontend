@@ -48,7 +48,6 @@ export const deleteOneDish = (id) => (dispatch) => {
 
 export const updateOneDish = (id, payload) => (dispatch) => {
   dispatch(setLoading(true));
-  console.log("ffff");
   updateDishes(id, payload)
     .then((res) => {
       console.log("UPADaTE", res);

@@ -13,13 +13,14 @@ import {
   deleteOneDish,
   fetchDishes,
   setOneDish,
+  updateOneDish,
 } from "../redux/actions/dishesAction";
 import CreateDish from "../components/modals/CreateDish";
 import DeleteConfirm from "../components/modals/DeleteConfirm";
 import IngredientsList from "../components/modals/IngredientsList";
 
 const Dishes = () => {
-  const { data, isLoading } = useSelector((state) => state.dishes);
+  const { data } = useSelector((state) => state.dishes);
   const dispatch = useDispatch();
 
   const [showCreateDishModal, setShowCreateDishModal] = useState(false);
@@ -27,7 +28,6 @@ const Dishes = () => {
   // const [oneDish, setOneDish] = useState(null);
 
   const [show, setShow] = useState(false);
-  console.log("DISHES RENDER");
   useEffect(() => {
     dispatch(fetchDishes());
   }, []);
@@ -35,7 +35,6 @@ const Dishes = () => {
   const handleClose = () => setShow(false);
   const handleShow = (item) => {
     dispatch(setOneDish(item));
-    // setOneDish(item);
     setShow(true);
   };
   const handleCreateDishes = () => {
@@ -43,6 +42,12 @@ const Dishes = () => {
   };
   const handleDeleteItem = (id) => {
     dispatch(deleteOneDish(id));
+  };
+
+  const removeItemFromDish = (dish, meal) => {
+    const arrMeals = dish.meals.filter((m) => m._id !== meal._id);
+
+    dispatch(updateOneDish(dish._id, [...arrMeals]));
   };
 
   return (
@@ -69,11 +74,11 @@ const Dishes = () => {
         />
         <Accordion>
           {data &&
-            data.map((item, index) => (
-              <div key={item._id} className={"dishName mb-2"}>
+            data.map((dish, index) => (
+              <div key={dish._id} className={"dishName mb-2"}>
                 <Accordion.Item eventKey={index}>
-                  <Accordion.Header>{item.title}</Accordion.Header>
-                  <SummaryList summary={{ ...item.summary }} />
+                  <Accordion.Header>{dish.title}</Accordion.Header>
+                  <SummaryList bold summary={{ ...dish.summary }} />
 
                   <Accordion.Body className={"px-0"}>
                     <div
@@ -85,7 +90,7 @@ const Dishes = () => {
                         className={"w-50 mx-3"}
                         variant="outline-dark"
                         size="sm"
-                        onClick={() => handleShow(item)}
+                        onClick={() => handleShow(dish)}
                       >
                         add
                       </Button>
@@ -99,20 +104,20 @@ const Dishes = () => {
                         <Dropdown.Item>UPDATE</Dropdown.Item>
                         <Dropdown.Item
                           className={"text-danger"}
-                          onClick={() => handleDeleteItem(item._id)}
+                          onClick={() => handleDeleteItem(dish._id)}
                         >
                           DELETE
                         </Dropdown.Item>
                       </DropdownButton>
                     </div>
-                    {item.meals &&
-                      item.meals.map((meal) => (
+                    {dish.meals &&
+                      dish.meals.map((meal) => (
                         <div key={meal._id} className={"dishList py-2"}>
                           <div className={"d-flex justify-content-between"}>
                             <div> {meal.title}</div>
 
                             <Button
-                              // onClick={handleAddDishes}
+                              onClick={() => removeItemFromDish(dish, meal)}
                               variant="danger"
                               size="sm"
                               className={"mx-3"}
@@ -126,9 +131,11 @@ const Dishes = () => {
                               carbs: meal.carbs,
                               fat: meal.fat,
                               calories: meal.calories,
-                              weight: meal.weight,
                             }}
                           />
+                          <p className={"text-success mx-1"}>
+                            in {meal.weight} gramm
+                          </p>
                         </div>
                       ))}
                   </Accordion.Body>
